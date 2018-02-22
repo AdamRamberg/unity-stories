@@ -47,11 +47,16 @@ namespace UnityStories
 		{
 			foreach (var reducer in reducers)
             {
-				if (state.Name == reducer.Name) {
+				if (state.Name == reducer.Name) 
+				{
 					reducer.Handler(state, action);
 
-					foreach (var subState in state.subStates) {
-						SendToReducers(action, subState, reducer.subReducers);
+					if (state.subStates != null)
+					{
+						foreach (var subState in state.subStates) 
+						{
+							SendToReducers(action, subState, reducer.subReducers);
+						}
 					}
 				}
             }
@@ -76,6 +81,11 @@ namespace UnityStories
             // Send state on connect
             handler(state);
         }
+
+		public void Listen(Action<StoreAction> handler)
+		{
+			actionListeners.Add(handler);
+		}
 
 		public int MapStateToPropsHandlerCount { get { return mapStateToPropsHandlers.Count; } }
 	}
