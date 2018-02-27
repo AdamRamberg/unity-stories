@@ -13,12 +13,51 @@ namespace UnityStories
 		private List<Action<State>> mapStateToPropsHandlers = new List<Action<State>>();
 		private List<Action<StoreAction>> actionListeners = new List<Action<StoreAction>>();
 
-		private void OnEnable()
-        {
+		public delegate StoreAction DelegateDispatch(StoreAction action);
+		public delegate void DelegateConnect(Action<State> handler);
+		public delegate void DelegateListen(Action<StoreAction> handler);
+		public delegate int DelegateGetConnectedCount();
+
+		private DelegateDispatch _dispatch;
+		public DelegateDispatch Dispatch {
+			get { return this._dispatch; }
+			internal set { this._dispatch = value; }
+		}
+
+		private DelegateConnect _connect;
+		public DelegateConnect Connect {
+			get { return this._connect; }
+			internal set { this._connect = value; }
+		}
+
+		private DelegateListen _listen;
+		public DelegateListen Listen {
+			get { return this._listen; }
+			internal set { this._listen = value; }
+		}
+
+		private DelegateGetConnectedCount _getConnectedCount;
+		public DelegateGetConnectedCount GetConnectedCount {
+			get { return this._getConnectedCount; }
+			internal set { this._getConnectedCount = value; }
+		}
+
+		private void CreateStore()
+		{
+			this._dispatch = DefImpl_Dispatch;
+			this._connect = DefImpl_Connect;
+			this._listen = DefImpl_Listen;
+			this._getConnectedCount = DefImpl_GetConnectedCount;
+
 			if (state != null) state.InitState();
 		}
 
-		public void Dispatch(StoreAction action)
+		private void OnEnable()
+        {
+			CreateStore();
+		}
+
+		private StoreAction DefImpl_Dispatch(StoreAction action)
         {
 			// Send action to reducers
 			foreach (var subState in state.subStates)
@@ -41,6 +80,8 @@ namespace UnityStories
 			#if UNITY_EDITOR
             RepaintEditor();
 			#endif
+
+			return action;
         }
 
 		private void SendToReducers(StoreAction action, State state, Reducer[] reducers)
@@ -75,18 +116,18 @@ namespace UnityStories
 		}
 		#endif
 
-        public void Connect(Action<State> handler)
+        public void DefImpl_Connect(Action<State> handler)
         {
             mapStateToPropsHandlers.Add(handler);
             // Send state on connect
             handler(state);
         }
 
-		public void Listen(Action<StoreAction> handler)
+		public int DefImpl_GetConnectedCount() { return mapStateToPropsHandlers.Count; }
+
+		public void DefImpl_Listen(Action<StoreAction> handler)
 		{
 			actionListeners.Add(handler);
 		}
-
-		public int MapStateToPropsHandlerCount { get { return mapStateToPropsHandlers.Count; } }
 	}
 }

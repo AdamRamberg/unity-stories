@@ -10,10 +10,10 @@ namespace UnityStories
 		public void TestConnect() 
 		{
 			var store = ScriptableObject.CreateInstance("Store") as Store;
-			Assert.AreEqual(store.MapStateToPropsHandlerCount, 0);
+			Assert.AreEqual(store.GetConnectedCount(), 0);
 			var handlerWasCalled = false;
 			store.Connect((State state) => { handlerWasCalled = true; });
-			Assert.AreEqual(store.MapStateToPropsHandlerCount, 1);
+			Assert.AreEqual(store.GetConnectedCount(), 1);
 			Assert.That(handlerWasCalled, Is.True);
 		}
 		
