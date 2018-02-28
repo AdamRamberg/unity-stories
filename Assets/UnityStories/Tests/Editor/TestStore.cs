@@ -21,11 +21,15 @@ namespace UnityStories
 		public void TestDispatch() 
 		{
 			var store = ScriptableObject.CreateInstance("Store") as Store;
-			store.state = ScriptableObject.CreateInstance("MainState") as MainState;
+			var storeCreator = new StoreCreator();
+			storeCreator.state = ScriptableObject.CreateInstance("MainState") as MainState;
 			var stateTest = ScriptableObject.CreateInstance("StateTest") as StateTest;
-			store.state.subStates = new State[1] { stateTest };
+			storeCreator.state.subStates = new State[1] { stateTest };
 			var reducerTest = ScriptableObject.CreateInstance("ReducerTest") as ReducerTest;
-			store.reducers = new Reducer[1] { reducerTest };
+			storeCreator.reducers = new Reducer[1] { reducerTest };
+			store.storeCreator = storeCreator;
+			store.CreateStore();
+
 			var actionListenerWasCalled = false;
 			store.Listen((StoreAction storeAction) => { actionListenerWasCalled = true; });
 
