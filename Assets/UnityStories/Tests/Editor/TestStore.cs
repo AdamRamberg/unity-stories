@@ -9,10 +9,12 @@ namespace UnityStories
 		[Test]
 		public void TestConnect() 
 		{
-			var store = ScriptableObject.CreateInstance("Store") as Store;
+			var store = ScriptableObject.CreateInstance("Stories") as Stories;
+			store.storiesCreator = new StoriesCreator();
+			store.CreateStories();
 			Assert.AreEqual(store.GetConnectedCount(), 0);
 			var handlerWasCalled = false;
-			store.Connect((State state) => { handlerWasCalled = true; });
+			store.Connect((Story state) => { handlerWasCalled = true; });
 			Assert.AreEqual(store.GetConnectedCount(), 1);
 			Assert.That(handlerWasCalled, Is.True);
 		}
@@ -20,22 +22,22 @@ namespace UnityStories
 		[Test]
 		public void TestDispatch() 
 		{
-			var store = ScriptableObject.CreateInstance("Store") as Store;
-			var storeCreator = new StoreCreator();
-			storeCreator.state = ScriptableObject.CreateInstance("MainState") as MainState;
-			var stateTest = ScriptableObject.CreateInstance("StateTest") as StateTest;
-			storeCreator.state.subStates = new State[1] { stateTest };
+			var store = ScriptableObject.CreateInstance("Stories") as Stories;
+			var storeCreator = new StoriesCreator();
+			storeCreator.entryStory = ScriptableObject.CreateInstance("EntryStory") as EntryStory;
+			var storyTest = ScriptableObject.CreateInstance("StoryTest") as StoryTest;
+			storeCreator.entryStory.subStories = new Story[1] { storyTest };
 			var reducerTest = ScriptableObject.CreateInstance("ReducerTest") as ReducerTest;
 			storeCreator.reducers = new Reducer[1] { reducerTest };
-			store.storeCreator = storeCreator;
-			store.CreateStore();
+			store.storiesCreator = storeCreator;
+			store.CreateStories();
 
 			var actionListenerWasCalled = false;
-			store.Listen((StoreAction storeAction) => { actionListenerWasCalled = true; });
+			store.Listen((StoryAction storyAction) => { actionListenerWasCalled = true; });
 
-			store.Dispatch(new ActionTest());
+			store.Dispatch(new StoryActionTest());
 			Assert.That(actionListenerWasCalled, Is.True);
-			Assert.That(stateTest.updated, Is.True);
+			Assert.That(storyTest.updated, Is.True);
 			Assert.That(reducerTest.wasHandlerCalled, Is.True);
 		}
 	}

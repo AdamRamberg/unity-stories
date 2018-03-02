@@ -1,7 +1,7 @@
 ﻿namespace UnityStories 
 {
 	// State used to test Store
-	public class StateTest : State 
+	public class StoryTest : Story 
 	{
 		public override string Name { get { return "test"; } }
 

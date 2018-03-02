@@ -3,7 +3,7 @@ namespace UnityStories
 {
 	public static class Compose 
 	{
-		public delegate Store.DelegateDispatch DelegateComposedDispatch(Store.DelegateDispatch nextDispatch);
+		public delegate Stories.DelegateDispatch DelegateComposedDispatch(Stories.DelegateDispatch nextDispatch);
 		public delegate DelegateComposedDispatch DelegateComposeDispatches(DelegateComposedDispatch[] composedDispatches);
 
 		public static DelegateComposeDispatches ComposeDispatches = _ComposeDispatches;

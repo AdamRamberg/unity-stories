@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using UnityStories;
 
-[CreateAssetMenu(menuName = "UnityStories/Example1/States/StateCount")]
-public class StateCount : State 
+[CreateAssetMenu(menuName = "UnityStories/Example1/Stories/StoryCount")]
+public class StoryCount : Story 
 {
 	public static string NAME = "count";
 	public override string Name { get { return NAME; } }
 
-	public override void InitState()
+	public override void InitStory()
 	{
 		countNotPresisted = 0;
 	}

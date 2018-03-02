@@ -6,8 +6,8 @@ namespace UnityStories
     {
         public class MiddlewareAPI 
         {
-            public Store.DelegateDispatch Dispatch;
-            public Store.DelegateGetState GetState;
+            public Stories.DelegateDispatch Dispatch;
+            public Stories.DelegateGetState GetState;
         }
         
         public delegate Compose.DelegateComposedDispatch DelegateMiddleware(MiddlewareAPI middlewareAPI);

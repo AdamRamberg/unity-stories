@@ -2,7 +2,11 @@
 Unity Stories is a state container for games built in Unity utilizing Scriptable Objects. 
 
 ## Influences
-Unity Stories takes inspiration and is influenced by Redux and Flux.
+Unity Stories is mainly taking inspiration and is influenced by <a href="https://github.com/reactjs/redux">Redux</a> and <a href="https://github.com/facebook/flux">Flux</a>. 
+
+Forerunner implementations in Unity / C# that also have influenced Unity Stories are: 
+- <a href="https://github.com/gblue1223/redux-unity3d">redux-unity-3d</a>
+- <a href="https://github.com/mattak/Unidux">Unidux</a>
 
 ## Motivation
 The general approach to building scripts in Unity often generates a code base that is monolithic. This results in that your code is cumbersome to test, non-modular and hard to debug and understand. 

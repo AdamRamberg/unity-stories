@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8098eceb89a45fe8df695d1a7f85f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  store: {fileID: 11400000, guid: 6624c43776f9a485a90cc6258324dcfc, type: 2}
+  stories: {fileID: 11400000, guid: 7ad11d195d3764cdebf9bac3eb3d5d11, type: 2}
 --- !u!114 &277879717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -827,7 +827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countText: {fileID: 992666692}
   countNotPersistedText: {fileID: 887189849}
-  store: {fileID: 11400000, guid: 6624c43776f9a485a90cc6258324dcfc, type: 2}
+  stories: {fileID: 11400000, guid: 7ad11d195d3764cdebf9bac3eb3d5d11, type: 2}
 --- !u!1 &1643199278
 GameObject:
   m_ObjectHideFlags: 0
@@ -959,7 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8098eceb89a45fe8df695d1a7f85f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  store: {fileID: 11400000, guid: 6624c43776f9a485a90cc6258324dcfc, type: 2}
+  stories: {fileID: 11400000, guid: 7ad11d195d3764cdebf9bac3eb3d5d11, type: 2}
 --- !u!114 &1834350758
 MonoBehaviour:
   m_ObjectHideFlags: 0

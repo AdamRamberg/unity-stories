@@ -8,11 +8,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0aea7db460ce246eeba30ac1d43cee23, type: 3}
-  m_Name: Store_Example1
+  m_Script: {fileID: 11500000, guid: a791b2e1e069a42b8b8cfa3873bbd3d8, type: 3}
+  m_Name: Stories_Example1
   m_EditorClassIdentifier: 
   storeCreator:
     reducers:
-    - {fileID: 11400000, guid: dce079371eed94835b19ae3fde13bfdc, type: 2}
-    state: {fileID: 11400000, guid: 0ca8868c1966b45dbb3e63e77869147f, type: 2}
+    - {fileID: 11400000, guid: a7af74e93123c4aad8729335892c0ea0, type: 2}
+    entryStory: {fileID: 11400000, guid: c6a772cad7c73440abeb1905a8cc7630, type: 2}
     enhancerCreators: {fileID: 11400000, guid: 8f171c891b73c467ba3d0f691c720b45, type: 2}

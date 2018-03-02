@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace UnityStories 
 {
-    [CreateAssetMenu(menuName = "UnityStories/Store")]
-	public class Store : ScriptableObject
+    [CreateAssetMenu(menuName = "UnityStories/Stories")]
+	public class Stories : ScriptableObject
 	{
-		public StoreCreator storeCreator;
+		public StoriesCreator storiesCreator;
 
-		public delegate StoreAction DelegateDispatch(StoreAction action);
-		public delegate void DelegateConnect(Action<State> handler);
-		public delegate void DelegateListen(Action<StoreAction> handler);
+		public delegate StoryAction DelegateDispatch(StoryAction action);
+		public delegate void DelegateConnect(Action<Story> handler);
+		public delegate void DelegateListen(Action<StoryAction> handler);
 		public delegate int DelegateGetConnectedCount();
-        public delegate MainState DelegateGetState();
+        public delegate EntryStory DelegateGetState();
 
 		private DelegateDispatch _dispatch;
 		public DelegateDispatch Dispatch {
@@ -46,14 +46,15 @@ namespace UnityStories
 			set { this._getState = value; }
 		}
 
-		public void CreateStore() 
+		public void CreateStories() 
 		{
-			storeCreator.CreateStories(this);
+			if (storiesCreator != null) 
+				storiesCreator.CreateStories(this);
 		}
 		
 		private void OnEnable()
         {
-			CreateStore();
+			CreateStories();
 		}
 	}
 }

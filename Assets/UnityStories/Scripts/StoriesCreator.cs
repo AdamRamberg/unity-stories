@@ -5,48 +5,43 @@ using UnityEngine;
 namespace UnityStories 
 {
     [Serializable]
-    public class StoreCreator 
+    public class StoriesCreator 
     {
         public Reducer[] reducers;
-        public MainState state;
+        public EntryStory entryStory;
+		// TODO: Make into array
 		public EnhancerCreator enhancerCreators;
-        private List<Action<State>> mapStateToPropsHandlers = new List<Action<State>>();
-        private List<Action<StoreAction>> actionListeners = new List<Action<StoreAction>>();
+        private List<Action<Story>> mapStateToPropsHandlers = new List<Action<Story>>();
+        private List<Action<StoryAction>> actionListeners = new List<Action<StoryAction>>();
 
-		public delegate void DelegateCreateStore(Store store, EnhancerCreator.Enhancer enhancer = null);
+		public delegate void DelegateCreateStories(Stories stories, EnhancerCreator.Enhancer enhancer = null);
 
-		public StoreCreator() 
+		public void CreateStories(Stories stories) 
 		{
-			CreateStore = _CreateStore;
-		}
-
-		public void CreateStories(Store store) 
-		{
-			_CreateStore(store, enhancerCreators.CreateEnhancer());
+			_CreateStories(stories, enhancerCreators != null ? enhancerCreators.CreateEnhancer() : null);
 		}
 		
-        private DelegateCreateStore CreateStore;
-		private void _CreateStore(Store store, EnhancerCreator.Enhancer enhancer = null)
+		private void _CreateStories(Stories stories, EnhancerCreator.Enhancer enhancer = null)
 		{
 			if (enhancer != null) 
 			{
-				enhancer(_CreateStore)(store);
+				enhancer(_CreateStories)(stories);
 				return;
 			}
 
-			store.Dispatch = DefImpl_Dispatch;
-			store.Connect = DefImpl_Connect;
-			store.Listen = DefImpl_Listen;
-			store.GetConnectedCount = DefImpl_GetConnectedCount;
-            store.GetState = DefImpl_GetState;
+			stories.Dispatch = DefImpl_Dispatch;
+			stories.Connect = DefImpl_Connect;
+			stories.Listen = DefImpl_Listen;
+			stories.GetConnectedCount = DefImpl_GetConnectedCount;
+            stories.GetState = DefImpl_GetState;
 
-			if (state != null) state.InitState();
+			if (entryStory != null) entryStory.InitStory();
 		}
 
-        private StoreAction DefImpl_Dispatch(StoreAction action)
+        private StoryAction DefImpl_Dispatch(StoryAction action)
         {
 			// Send action to reducers
-			foreach (var subState in state.subStates)
+			foreach (var subState in entryStory.subStories)
 			{
 				SendToReducers(action, subState, reducers);
 			}
@@ -54,7 +49,7 @@ namespace UnityStories
             // Send update to everyone that have mapped their props
             foreach (var handler in mapStateToPropsHandlers)
             {
-                handler(state);
+                handler(entryStory);
             }
 
             // Send action forward to listeners
@@ -70,7 +65,7 @@ namespace UnityStories
 			return action;
         }
 
-		private void SendToReducers(StoreAction action, State state, Reducer[] reducers)
+		private void SendToReducers(StoryAction action, Story state, Reducer[] reducers)
 		{
 			foreach (var reducer in reducers)
             {
@@ -78,9 +73,9 @@ namespace UnityStories
 				{
 					reducer.Handler(state, action);
 
-					if (state.subStates != null)
+					if (state.subStories != null)
 					{
-						foreach (var subState in state.subStates) 
+						foreach (var subState in state.subStories) 
 						{
 							SendToReducers(action, subState, reducer.subReducers);
 						}
@@ -102,23 +97,23 @@ namespace UnityStories
 		}
 		#endif
 
-        public void DefImpl_Connect(Action<State> handler)
+        public void DefImpl_Connect(Action<Story> handler)
         {
             mapStateToPropsHandlers.Add(handler);
             // Send state on connect
-            handler(state);
+            handler(entryStory);
         }
 
 		public int DefImpl_GetConnectedCount() { return mapStateToPropsHandlers.Count; }
 
-		public void DefImpl_Listen(Action<StoreAction> handler)
+		public void DefImpl_Listen(Action<StoryAction> handler)
 		{
 			actionListeners.Add(handler);
 		}
 
-        public MainState DefImpl_GetState()
+        public EntryStory DefImpl_GetState()
         {
-            return state;
+            return entryStory;
         }
     }
 }

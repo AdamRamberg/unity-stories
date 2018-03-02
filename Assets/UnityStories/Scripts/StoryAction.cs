@@ -1,6 +1,6 @@
 ﻿namespace UnityStories 
 {
-	public interface StoreAction  
+	public interface StoryAction  
 	{
 		string Type { get; }
 	}

@@ -5,15 +5,15 @@ using UnityStories;
 
 public class Button : MonoBehaviour
 {
-    public Store store;
+    public Stories stories;
 
     public void OnClick_Inc()
     {
-        store.Dispatch(new ActionIncrementCount());
+        stories.Dispatch(new StoryActionIncrementCount());
     }
 
     public void OnClick_Dec()
     {
-        store.Dispatch(new ActionDecrementCount());
+        stories.Dispatch(new StoryActionDecrementCount());
     }
 }

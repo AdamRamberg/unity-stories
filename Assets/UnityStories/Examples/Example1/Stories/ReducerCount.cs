@@ -4,12 +4,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "UnityStories/Example1/Reducers/ReducerCount")]
 public class ReducerCount : Reducer
 {
-    public override string Name { get { return StateCount.NAME; } }
+    public override string Name { get { return StoryCount.NAME; } }
 
-    public override void Handler(State state, StoreAction action)
+    public override void Handler(Story state, StoryAction action)
     {
-        if (!(state is StateCount)) return;
-        var stateCount = (StateCount) state;
+        if (!(state is StoryCount)) return;
+        var stateCount = (StoryCount) state;
 
         switch (action.Type)
         {

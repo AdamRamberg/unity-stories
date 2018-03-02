@@ -20,10 +20,10 @@ namespace UnityStories
             return _ComposeDispatch;   
         }
 
-        private static Store.DelegateDispatch _ComposeDispatch(Store.DelegateDispatch nextDispatch)
+        private static Stories.DelegateDispatch _ComposeDispatch(Stories.DelegateDispatch nextDispatch)
         {
             return (action) => {
-                var storeAction = (StoreAction) action;
+                var storeAction = (StoryAction) action;
                 Debug.Log("Logger: " + storeAction.Type);
                 return nextDispatch(action);
             };

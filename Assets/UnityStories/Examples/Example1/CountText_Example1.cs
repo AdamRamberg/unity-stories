@@ -8,11 +8,11 @@ public class CountText_Example1 : MonoBehaviour {
     public Text countNotPersistedText;
     private int count = 0;
     private int countNotPersisted = 0;
-    public Store store;
+    public Stories stories;
 
     void Start() 
     {
-        store.Connect(MapStateToProps);
+        stories.Connect(MapStateToProps);
     }
 
     void Update()
@@ -22,9 +22,9 @@ public class CountText_Example1 : MonoBehaviour {
         countNotPersistedText.text = "Not persisted count is: " + countNotPersisted;
     }
 
-    public void MapStateToProps(State state)
+    public void MapStateToProps(Story state)
     {
-        count = state.Get<StateCount>(StateCount.NAME).count;
-        countNotPersisted = state.Get<StateCount>(StateCount.NAME).countNotPresisted;
+        count = state.Get<StoryCount>(StoryCount.NAME).count;
+        countNotPersisted = state.Get<StoryCount>(StoryCount.NAME).countNotPresisted;
     }
 }

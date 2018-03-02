@@ -7,10 +7,10 @@
 
 		public bool wasHandlerCalled = false;
 
-		public override void Handler(State state, StoreAction action)
+		public override void Handler(Story state, StoryAction action)
 		{
-			if (!(state is StateTest)) return;
-			var stateTest = (StateTest) state;
+			if (!(state is StoryTest)) return;
+			var stateTest = (StoryTest) state;
 			wasHandlerCalled = true;
 
 			switch (action.Type)
