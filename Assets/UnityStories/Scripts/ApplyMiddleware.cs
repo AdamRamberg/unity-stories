@@ -41,7 +41,6 @@ namespace UnityStories
 				    chain[i] = middlewares[i](middlewareAPI);
 			    }
 			    _dispatch = Compose.ComposeDispatches(chain)(store.Dispatch);
-                Debug.Log(_dispatch);
 			    store.Dispatch = _dispatch;                
             };
         }
