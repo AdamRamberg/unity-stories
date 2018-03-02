@@ -1,4 +1,4 @@
-# <img src="https://s3.amazonaws.com/unity-stories/unity-stories-withname.png" height="128">
+# <img src="https://s3.amazonaws.com/unity-stories/unity-stories-withname.png" style="max-height: 128px;">
 Unity Stories is a state container for games built in Unity utilizing Scriptable Objects. 
 
 ## Influences
