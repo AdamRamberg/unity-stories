@@ -22,7 +22,7 @@ namespace UnityStories
 
 		public void CreateStories(Store store) 
 		{
-			_CreateStore(store);
+			_CreateStore(store, enhancerCreators.CreateEnhancer());
 		}
 		
         private DelegateCreateStore CreateStore;
@@ -30,7 +30,8 @@ namespace UnityStories
 		{
 			if (enhancer != null) 
 			{
-				enhancer(CreateStore)(store);
+				enhancer(_CreateStore)(store);
+				return;
 			}
 
 			store.Dispatch = DefImpl_Dispatch;

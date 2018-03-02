@@ -10,7 +10,7 @@ namespace UnityStories
             public Store.DelegateGetState GetState;
         }
         
-        public delegate Compose.DelegateComposedDispatch DelegateMiddleware(MiddlewareAPI api);
+        public delegate Compose.DelegateComposedDispatch DelegateMiddleware(MiddlewareAPI middlewareAPI);
         public delegate DelegateMiddleware DelegateReturnMiddleware();
         public DelegateReturnMiddleware ReturnMiddleware;
 

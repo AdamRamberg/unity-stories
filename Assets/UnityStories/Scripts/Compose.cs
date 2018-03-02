@@ -1,3 +1,4 @@
+using UnityEngine;
 namespace UnityStories
 {
 	public static class Compose 
@@ -7,11 +8,13 @@ namespace UnityStories
 
 		public static DelegateComposeDispatches ComposeDispatches = _ComposeDispatches;
 		private static DelegateComposedDispatch _ComposeDispatches(DelegateComposedDispatch[] composedDispatches) {
-			if (composedDispatches.Length == 0) {
+			if (composedDispatches.Length == 0) 
+			{
 				return null;
 			}
 
-			if (composedDispatches.Length == 1) {
+			if (composedDispatches.Length == 1) 
+			{
 				return composedDispatches[0];
 			}
 
