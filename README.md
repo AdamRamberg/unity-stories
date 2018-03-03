@@ -20,4 +20,4 @@ Import unitypackage from latest releases or download and import into your projec
 See examples in the project.
 
 ## Performance
-In order to avoid unnecessary garbage collection reference types (for example strings) in state and in actions should be avoided when possible. Furthermore, it also might be a good idea to use action factories in order to not generate unnecessary garbage. 
+In order to avoid unnecessary garbage collection reference types (for example strings) in stories and in actions should be avoided when possible. Furthermore, it also might be a good idea to use action factories in order to not generate unnecessary garbage. 

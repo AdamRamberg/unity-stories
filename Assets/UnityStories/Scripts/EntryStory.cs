@@ -10,15 +10,15 @@ namespace UnityStories
 
 		public override void InitStory()
 		{
-			InitStateSub(this);
+			InitStorySub(this);
 		}
 
-		private void InitStateSub(Story state)
+		private void InitStorySub(Story story)
 		{
-			foreach(var subState in state.subStories) 
+			foreach(var subStory in story.subStories) 
 			{
-				subState.InitStory();
-				InitStateSub(subState);
+				subStory.InitStory();
+				InitStorySub(subStory);
 			}
 		}
 	}

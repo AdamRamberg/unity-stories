@@ -6,7 +6,7 @@ namespace UnityStories
 	public abstract class Reducer : ScriptableObject
 	{
 		public abstract string Name { get; }
-		public virtual void Handler(Story state, StoryAction action){}
+		public virtual void Handler(Story story, StoryAction action){}
 		public Reducer[] subReducers;
 		public Reducer this[string s] 
 		{

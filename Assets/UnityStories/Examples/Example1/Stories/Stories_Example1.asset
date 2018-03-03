@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a791b2e1e069a42b8b8cfa3873bbd3d8, type: 3}
   m_Name: Stories_Example1
   m_EditorClassIdentifier: 
-  storeCreator:
+  storiesCreator:
     reducers:
     - {fileID: 11400000, guid: a7af74e93123c4aad8729335892c0ea0, type: 2}
     entryStory: {fileID: 11400000, guid: c6a772cad7c73440abeb1905a8cc7630, type: 2}

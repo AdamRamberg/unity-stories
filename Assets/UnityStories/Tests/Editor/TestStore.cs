@@ -14,7 +14,7 @@ namespace UnityStories
 			store.CreateStories();
 			Assert.AreEqual(store.GetConnectedCount(), 0);
 			var handlerWasCalled = false;
-			store.Connect((Story state) => { handlerWasCalled = true; });
+			store.Connect((Story story) => { handlerWasCalled = true; });
 			Assert.AreEqual(store.GetConnectedCount(), 1);
 			Assert.That(handlerWasCalled, Is.True);
 		}

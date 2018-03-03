@@ -11,7 +11,7 @@ namespace UnityStories
         public EntryStory entryStory;
 		// TODO: Make into array
 		public EnhancerCreator enhancerCreators;
-        private List<Action<Story>> mapStateToPropsHandlers = new List<Action<Story>>();
+        private List<Action<Story>> mapStoriesToPropsHandlers = new List<Action<Story>>();
         private List<Action<StoryAction>> actionListeners = new List<Action<StoryAction>>();
 
 		public delegate void DelegateCreateStories(Stories stories, EnhancerCreator.Enhancer enhancer = null);
@@ -33,7 +33,7 @@ namespace UnityStories
 			stories.Connect = DefImpl_Connect;
 			stories.Listen = DefImpl_Listen;
 			stories.GetConnectedCount = DefImpl_GetConnectedCount;
-            stories.GetState = DefImpl_GetState;
+            stories.GetStories = DefImpl_GetStories;
 
 			if (entryStory != null) entryStory.InitStory();
 		}
@@ -41,13 +41,13 @@ namespace UnityStories
         private StoryAction DefImpl_Dispatch(StoryAction action)
         {
 			// Send action to reducers
-			foreach (var subState in entryStory.subStories)
+			foreach (var subStory in entryStory.subStories)
 			{
-				SendToReducers(action, subState, reducers);
+				SendToReducers(action, subStory, reducers);
 			}
 
             // Send update to everyone that have mapped their props
-            foreach (var handler in mapStateToPropsHandlers)
+            foreach (var handler in mapStoriesToPropsHandlers)
             {
                 handler(entryStory);
             }
@@ -58,60 +58,43 @@ namespace UnityStories
                 handler(action);
             }
 
-			#if UNITY_EDITOR
-            RepaintEditor();
-			#endif
-
 			return action;
         }
 
-		private void SendToReducers(StoryAction action, Story state, Reducer[] reducers)
+		private void SendToReducers(StoryAction action, Story story, Reducer[] reducers)
 		{
 			foreach (var reducer in reducers)
             {
-				if (state.Name == reducer.Name) 
+				if (story.Name == reducer.Name) 
 				{
-					reducer.Handler(state, action);
+					reducer.Handler(story, action);
 
-					if (state.subStories != null)
+					if (story.subStories != null)
 					{
-						foreach (var subState in state.subStories) 
+						foreach (var subStory in story.subStories) 
 						{
-							SendToReducers(action, subState, reducer.subReducers);
+							SendToReducers(action, subStory, reducer.subReducers);
 						}
 					}
 				}
             }
 		}
 
-		#if UNITY_EDITOR
-		// Repaint unity editor
-		public delegate void RepaintEditorAction();
-		public event RepaintEditorAction WantRepaintEditor;
-		private void RepaintEditor()
-		{
-			if (WantRepaintEditor != null)
-			{
-				WantRepaintEditor();
-			}
-		}
-		#endif
-
         public void DefImpl_Connect(Action<Story> handler)
         {
-            mapStateToPropsHandlers.Add(handler);
-            // Send state on connect
+            mapStoriesToPropsHandlers.Add(handler);
+            // Send stories on connect
             handler(entryStory);
         }
 
-		public int DefImpl_GetConnectedCount() { return mapStateToPropsHandlers.Count; }
+		public int DefImpl_GetConnectedCount() { return mapStoriesToPropsHandlers.Count; }
 
 		public void DefImpl_Listen(Action<StoryAction> handler)
 		{
 			actionListeners.Add(handler);
 		}
 
-        public EntryStory DefImpl_GetState()
+        public EntryStory DefImpl_GetStories()
         {
             return entryStory;
         }

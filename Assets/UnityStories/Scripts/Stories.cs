@@ -14,7 +14,7 @@ namespace UnityStories
 		public delegate void DelegateConnect(Action<Story> handler);
 		public delegate void DelegateListen(Action<StoryAction> handler);
 		public delegate int DelegateGetConnectedCount();
-        public delegate EntryStory DelegateGetState();
+        public delegate EntryStory DelegateGetStories();
 
 		private DelegateDispatch _dispatch;
 		public DelegateDispatch Dispatch {
@@ -40,10 +40,10 @@ namespace UnityStories
 			set { this._getConnectedCount = value; }
 		}
 
-		private DelegateGetState _getState;
-		public DelegateGetState GetState {
-			get { return this._getState; }
-			set { this._getState = value; }
+		private DelegateGetStories _getStories;
+		public DelegateGetStories GetStories {
+			get { return this._getStories; }
+			set { this._getStories = value; }
 		}
 
 		public void CreateStories() 

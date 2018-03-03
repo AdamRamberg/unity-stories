@@ -30,7 +30,7 @@ namespace UnityStories
                 var chain = new Compose.DelegateComposedDispatch[middlewares.Length];
 
                 var middlewareAPI = new Middleware.MiddlewareAPI () {
-                    GetState = store.GetState,
+                    GetStories = store.GetStories,
                     Dispatch = (action) => {
                         return _dispatch (action);
                     }

@@ -12,7 +12,7 @@ public class CountText_Example1 : MonoBehaviour {
 
     void Start() 
     {
-        stories.Connect(MapStateToProps);
+        stories.Connect(MapStoriesToProps);
     }
 
     void Update()
@@ -22,9 +22,9 @@ public class CountText_Example1 : MonoBehaviour {
         countNotPersistedText.text = "Not persisted count is: " + countNotPersisted;
     }
 
-    public void MapStateToProps(Story state)
+    public void MapStoriesToProps(Story story)
     {
-        count = state.Get<StoryCount>(StoryCount.NAME).count;
-        countNotPersisted = state.Get<StoryCount>(StoryCount.NAME).countNotPresisted;
+        count = story.Get<StoryCount>(StoryCount.NAME).count;
+        countNotPersisted = story.Get<StoryCount>(StoryCount.NAME).countNotPresisted;
     }
 }

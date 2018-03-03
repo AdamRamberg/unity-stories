@@ -7,17 +7,17 @@
 
 		public bool wasHandlerCalled = false;
 
-		public override void Handler(Story state, StoryAction action)
+		public override void Handler(Story story, StoryAction action)
 		{
-			if (!(state is StoryTest)) return;
-			var stateTest = (StoryTest) state;
+			if (!(story is StoryTest)) return;
+			var storyTest = (StoryTest) story;
 			wasHandlerCalled = true;
 
 			switch (action.Type)
 			{
 				case "test":
 					{
-						stateTest.updated = true;
+						storyTest.updated = true;
 						break;
 					}
 			}
