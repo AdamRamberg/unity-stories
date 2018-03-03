@@ -8,8 +8,7 @@ namespace UnityStories
     public class StoriesCreator 
     {
         public EntryStory entryStory;
-		// TODO: Make into array
-		public EnhancerCreator enhancerCreators;
+		public EnhancerCreator[] enhancerCreators;
         private List<Action<Story>> mapStoriesToPropsHandlers = new List<Action<Story>>();
         private List<Action<StoryAction>> actionListeners = new List<Action<StoryAction>>();
 
@@ -17,7 +16,20 @@ namespace UnityStories
 
 		public void CreateStories(Stories stories) 
 		{
-			_CreateStories(stories, enhancerCreators != null ? enhancerCreators.CreateEnhancer() : null);
+			_CreateStories(stories, GetComposedEnhancers());
+		}
+
+		private EnhancerCreator.Enhancer GetComposedEnhancers()
+		{
+			if (enhancerCreators == null) return null;
+
+			var enhancers = new EnhancerCreator.Enhancer[enhancerCreators.Length];
+			for (var i = 0; i < enhancerCreators.Length; ++i) 
+			{
+				enhancers[i] = enhancerCreators[i].CreateEnhancer();
+			}
+
+			return Compose.ComposeEnhancers(enhancers);
 		}
 		
 		private void _CreateStories(Stories stories, EnhancerCreator.Enhancer enhancer = null)
@@ -62,7 +74,7 @@ namespace UnityStories
 			story.ActionHandler(action);
 
 			if (story.subStories == null) return;
-			
+
 			foreach (var subStory in story.subStories)
 			{
 				SendActionToStories(action, subStory);
