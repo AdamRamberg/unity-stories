@@ -15,6 +15,8 @@ namespace UnityStories
 
 		private void InitStorySub(Story story)
 		{
+			if (story.subStories == null) return;
+			
 			foreach(var subStory in story.subStories) 
 			{
 				subStory.InitStory();

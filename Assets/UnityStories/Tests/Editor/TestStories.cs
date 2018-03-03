@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace UnityStories 
 {
-	public class TestStore 
+	public class TestStories 
 	{
 		[Test]
 		public void TestConnect() 
@@ -23,13 +23,12 @@ namespace UnityStories
 		public void TestDispatch() 
 		{
 			var store = ScriptableObject.CreateInstance("Stories") as Stories;
-			var storeCreator = new StoriesCreator();
-			storeCreator.entryStory = ScriptableObject.CreateInstance("EntryStory") as EntryStory;
+			var storiesCreator = new StoriesCreator();
+			var entryStory = ScriptableObject.CreateInstance("EntryStory") as EntryStory;
 			var storyTest = ScriptableObject.CreateInstance("StoryTest") as StoryTest;
-			storeCreator.entryStory.subStories = new Story[1] { storyTest };
-			var reducerTest = ScriptableObject.CreateInstance("ReducerTest") as ReducerTest;
-			storeCreator.reducers = new Reducer[1] { reducerTest };
-			store.storiesCreator = storeCreator;
+			entryStory.subStories = new Story[1] { storyTest };
+			storiesCreator.entryStory = entryStory;
+			store.storiesCreator = storiesCreator;
 			store.CreateStories();
 
 			var actionListenerWasCalled = false;
@@ -38,7 +37,7 @@ namespace UnityStories
 			store.Dispatch(new StoryActionTest());
 			Assert.That(actionListenerWasCalled, Is.True);
 			Assert.That(storyTest.updated, Is.True);
-			Assert.That(reducerTest.wasHandlerCalled, Is.True);
+			Assert.That(storyTest.wasHandlerCalled, Is.True);
 		}
 	}
 }

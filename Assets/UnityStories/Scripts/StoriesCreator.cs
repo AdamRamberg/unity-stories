@@ -7,7 +7,6 @@ namespace UnityStories
     [Serializable]
     public class StoriesCreator 
     {
-        public Reducer[] reducers;
         public EntryStory entryStory;
 		// TODO: Make into array
 		public EnhancerCreator enhancerCreators;
@@ -40,11 +39,8 @@ namespace UnityStories
 
         private StoryAction DefImpl_Dispatch(StoryAction action)
         {
-			// Send action to reducers
-			foreach (var subStory in entryStory.subStories)
-			{
-				SendToReducers(action, subStory, reducers);
-			}
+			// Send action to stories
+			SendActionToStories(action, entryStory);
 
             // Send update to everyone that have mapped their props
             foreach (var handler in mapStoriesToPropsHandlers)
@@ -61,23 +57,16 @@ namespace UnityStories
 			return action;
         }
 
-		private void SendToReducers(StoryAction action, Story story, Reducer[] reducers)
+		private void SendActionToStories(StoryAction action, Story story)
 		{
-			foreach (var reducer in reducers)
-            {
-				if (story.Name == reducer.Name) 
-				{
-					reducer.Handler(story, action);
+			story.ActionHandler(action);
 
-					if (story.subStories != null)
-					{
-						foreach (var subStory in story.subStories) 
-						{
-							SendToReducers(action, subStory, reducer.subReducers);
-						}
-					}
-				}
-            }
+			if (story.subStories == null) return;
+			
+			foreach (var subStory in story.subStories)
+			{
+				SendActionToStories(action, subStory);
+			}
 		}
 
         public void DefImpl_Connect(Action<Story> handler)

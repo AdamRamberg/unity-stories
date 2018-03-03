@@ -29,5 +29,6 @@ namespace UnityStories
 		}
 
 		public virtual void InitStory() {}
+		public virtual void ActionHandler(StoryAction action){}
 	}
 }
