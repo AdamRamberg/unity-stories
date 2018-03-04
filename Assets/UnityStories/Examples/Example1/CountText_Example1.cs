@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityStories;
 
-public class CountText_Example1 : MonoBehaviour {
+public class CountText_Example1 : MonoBehaviour 
+{
     public Text countText;
     public Text countNotPersistedText;
     private int count = 0;
@@ -24,7 +25,7 @@ public class CountText_Example1 : MonoBehaviour {
 
     public void MapStoriesToProps(Story story)
     {
-        count = story.Get<StoryCount>(StoryCount.NAME).count;
-        countNotPersisted = story.Get<StoryCount>(StoryCount.NAME).countNotPresisted;
+        count = story.Get<CountStory>(CountStory.NAME).count;
+        countNotPersisted = story.Get<CountStory>(CountStory.NAME).countNotPresisted;
     }
 }

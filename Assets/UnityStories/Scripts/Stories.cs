@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UnityStories 
 {
-    [CreateAssetMenu(menuName = "UnityStories/Stories")]
+    [CreateAssetMenu(menuName = "Unity Stories/Stories")]
 	public class Stories : ScriptableObject
 	{
 		public StoriesCreator storiesCreator;

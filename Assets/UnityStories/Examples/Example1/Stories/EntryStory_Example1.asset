@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Name: EntryStory_Example1
   m_EditorClassIdentifier: 
   subStories:
-  - {fileID: 11400000, guid: 622f5f3723e70441c9f8d4b99eef0743, type: 2}
+  - {fileID: 11400000, guid: 34ea13b909ee14241b325b730b597be2, type: 2}

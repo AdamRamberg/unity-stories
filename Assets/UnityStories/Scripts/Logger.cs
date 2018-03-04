@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UnityStories 
 {
-    [CreateAssetMenu(menuName = "UnityStories/Middleware/Logger")]
+    [CreateAssetMenu(menuName = "Unity Stories/Middleware/Logger")]
     public class Logger : Middleware
     {
         public Logger() 

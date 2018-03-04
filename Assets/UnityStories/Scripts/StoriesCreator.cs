@@ -55,15 +55,15 @@ namespace UnityStories
 			SendActionToStories(action, entryStory);
 
             // Send update to everyone that have mapped their props
-            foreach (var handler in mapStoriesToPropsHandlers)
+            for (var i = 0; i < mapStoriesToPropsHandlers.Count; ++i)
             {
-                handler(entryStory);
+                mapStoriesToPropsHandlers[i](entryStory);
             }
 
             // Send action forward to listeners
-            foreach (var handler in actionListeners)
+            for (var i = 0; i < actionListeners.Count; ++i)
             {
-                handler(action);
+                actionListeners[i](action);
             }
 
 			return action;
@@ -75,9 +75,9 @@ namespace UnityStories
 
 			if (story.subStories == null) return;
 
-			foreach (var subStory in story.subStories)
+			for (var i = 0; i < story.subStories.Length; ++i) 
 			{
-				SendActionToStories(action, subStory);
+				SendActionToStories(action, story.subStories[i]);
 			}
 		}
 

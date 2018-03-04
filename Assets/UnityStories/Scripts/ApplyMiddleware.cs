@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UnityStories 
 {
-    [CreateAssetMenu(menuName = "UnityStories/ApplyMiddleware")]
+    [CreateAssetMenu(menuName = "Unity Stories/Apply Middleware")]
     public class ApplyMiddleware : EnhancerCreator
     {
         public Middleware[] middlewares;

@@ -2,10 +2,10 @@
 
 namespace UnityStories 
 {
-	[CreateAssetMenu(menuName = "UnityStories/EntryStory")]
+	[CreateAssetMenu(menuName = "Unity Stories/Entry Story")]
 	public class EntryStory : Story 
 	{
-		private const string NAME = "main";
+		private const string NAME = "entry";
 		public override string Name { get { return NAME; } }
 
 		public override void InitStory()
@@ -17,10 +17,10 @@ namespace UnityStories
 		{
 			if (story.subStories == null) return;
 			
-			foreach(var subStory in story.subStories) 
+			for (var i = 0; i < story.subStories.Length; ++i) 
 			{
-				subStory.InitStory();
-				InitStorySub(subStory);
+				story.subStories[i].InitStory();
+				InitStorySub(story.subStories[i]);
 			}
 		}
 	}
