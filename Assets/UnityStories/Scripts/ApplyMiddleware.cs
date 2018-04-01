@@ -26,6 +26,8 @@ namespace UnityStories
             return (createStore) => (store, enhancer) => 
             {
                 createStore(store);
+                if (middlewares == null || middlewares.Length == 0) return;
+
                 var _dispatch = store.Dispatch;
                 var chain = new Compose.DelegateComposedDispatch[middlewares.Length];
 

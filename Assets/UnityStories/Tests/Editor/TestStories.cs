@@ -25,19 +25,18 @@ namespace UnityStories
 			var store = ScriptableObject.CreateInstance("Stories") as Stories;
 			var storiesCreator = new StoriesCreator();
 			var entryStory = ScriptableObject.CreateInstance("EntryStory") as EntryStory;
-			var storyTest = ScriptableObject.CreateInstance("StoryTest") as StoryTest;
-			entryStory.subStories = new Story[1] { storyTest };
+			var testStory = ScriptableObject.CreateInstance("TestStory") as TestStory;
+			entryStory.subStories = new Story[1] { testStory };
 			storiesCreator.entryStory = entryStory;
 			store.storiesCreator = storiesCreator;
-			store.CreateStories();
+			store.CreateStories();   
 
 			var actionListenerWasCalled = false;
 			store.Listen((StoryAction storyAction) => { actionListenerWasCalled = true; });
 
-			store.Dispatch(new StoryActionTest());
+			store.Dispatch(new TestStory.TestAction());
 			Assert.That(actionListenerWasCalled, Is.True);
-			Assert.That(storyTest.updated, Is.True);
-			Assert.That(storyTest.wasHandlerCalled, Is.True);
+			Assert.That(testStory.updated, Is.True);
 		}
 	}
 }

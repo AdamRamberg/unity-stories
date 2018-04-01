@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Name: CountStory_Example1
   m_EditorClassIdentifier: 
   subStories: []
-  count: 0
+  count: 1
   countNotPresisted: 0

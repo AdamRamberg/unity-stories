@@ -25,7 +25,7 @@ public class CountText_Example1 : MonoBehaviour
 
     public void MapStoriesToProps(Story story)
     {
-        count = story.Get<CountStory>(CountStory.NAME).count;
-        countNotPersisted = story.Get<CountStory>(CountStory.NAME).countNotPresisted;
+        count = story.Get<CountStory>().count;
+        countNotPersisted = story.Get<CountStory>().countNotPresisted;
     }
 }

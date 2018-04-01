@@ -1,24 +1,27 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UnityStories 
 {
 	public abstract class Story : ScriptableObject
 	{
-		public abstract string Name { get; }
 		public Story[] subStories;
-		public Story this[string s] 
+
+		private T GetSubStory<T>() where T : Story
 		{
-			get 
+			for (var i = 0; subStories != null && i < subStories.Length; ++i)
 			{
-				if (subStories == null) return null;
-				return subStories.FirstOrDefault(story => story.Name == s);
+				if (subStories[i].GetType() == typeof(T)) 
+				{
+					return (T) subStories[i];
+				}
 			}
+
+			return null;
 		}
 
-		public T Get<T>(string key) where T : Story
+		public T Get<T>() where T : Story
 		{
-			var story = this[key];
+			var story = GetSubStory<T>();
 
 			if (story != null) 
 			{
@@ -29,6 +32,5 @@ namespace UnityStories
 		}
 
 		public virtual void InitStory() {}
-		public virtual void ActionHandler(StoryAction action){}
 	}
 }

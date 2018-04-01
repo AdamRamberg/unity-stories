@@ -4,10 +4,6 @@ using UnityStories;
 [CreateAssetMenu(menuName = "Unity Stories/Example1/Stories/Count Story")]
 public class CountStory : Story 
 {
-    // Define the name of the Story. Should be unique for all of your Stories.
-	public static string NAME = "count";
-	public override string Name { get { return NAME; } }
-
     // Variables that you want to keep track of in your story.
 	public int count = 0;
 	public int countNotPresisted = 0;
@@ -18,38 +14,48 @@ public class CountStory : Story
 		countNotPresisted = 0;
 	}
 
-    // Handle Story Actions and mutate your state accordingly.
-	public override void ActionHandler(StoryAction action)
+    // Actions
+    public class StoryActionIncrementCount : StoryAction 
     {
-        switch (action.Type)
+        public override void ApplyToStory(Story story) 
         {
-            case INCREMENT_COUNTER:
-                {
-                    count++;
-                    countNotPresisted++;
-                    break;
-                }
-            case DECREMENT_COUNTER:
-                {
-                    count--;
-                    countNotPresisted--;
-                    break;
-                }
+            if (story.GetType() != typeof(CountStory)) return;
+
+            var countStory = (CountStory) story;
+            countStory.count++;
+            countStory.countNotPresisted++;
         }
     }
 
-    // Action constants
-    public const string INCREMENT_COUNTER = "INCREMENT_COUNTER";
-    public const string DECREMENT_COUNTER = "DECREMENT_COUNTER";
-
-    // Actions
-    public struct StoryActionIncrementCount : StoryAction 
+    public static class StoryActionIncrementCountFactory
     {
-        public string Type { get { return INCREMENT_COUNTER; } }
+        static StoryActionFactoryHelper<StoryActionIncrementCount> helper = new StoryActionFactoryHelper<StoryActionIncrementCount>();
+        public static StoryActionIncrementCount Get() 
+        {
+            var action = helper.GetUnused();
+            return action != null ? action : helper.CacheAndReturn(new StoryActionIncrementCount());
+        }
     }
 
-    public struct StoryActionDecrementCount : StoryAction 
+    public class StoryActionDecrementCount : StoryAction 
     {
-        public string Type { get { return DECREMENT_COUNTER; } }
+        public override void ApplyToStory(Story story) 
+        {
+            if (story.GetType() != typeof(CountStory)) return;
+
+            var countStory = (CountStory) story;
+            countStory.count--;
+            countStory.countNotPresisted--;
+        }
+    }
+
+    public static class StoryActionDecrementCountFactory
+    {
+        static StoryActionFactoryHelper<StoryActionDecrementCount> helper = new StoryActionFactoryHelper<StoryActionDecrementCount>();
+        public static StoryActionDecrementCount Get() 
+        {
+            var action = helper.GetUnused();
+            return action != null ? action : helper.CacheAndReturn(new StoryActionDecrementCount());
+        }
     }
 }

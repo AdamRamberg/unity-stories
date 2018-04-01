@@ -21,7 +21,7 @@ namespace UnityStories
 
 		private EnhancerCreator.Enhancer GetComposedEnhancers()
 		{
-			if (enhancerCreators == null) return null;
+			if (enhancerCreators == null || enhancerCreators.Length == 0) return null;
 
 			var enhancers = new EnhancerCreator.Enhancer[enhancerCreators.Length];
 			for (var i = 0; i < enhancerCreators.Length; ++i) 
@@ -51,33 +51,34 @@ namespace UnityStories
 
         private StoryAction DefImpl_Dispatch(StoryAction action)
         {
-			// Send action to stories
-			SendActionToStories(action, entryStory);
+			// Apply action to stories
+			ApplyActionToStories(action, entryStory);
 
-            // Send update to everyone that have mapped their props
+            // // Send update to everyone that have mapped their props
             for (var i = 0; i < mapStoriesToPropsHandlers.Count; ++i)
             {
                 mapStoriesToPropsHandlers[i](entryStory);
             }
 
-            // Send action forward to listeners
+            // // Send action forward to listeners
             for (var i = 0; i < actionListeners.Count; ++i)
             {
                 actionListeners[i](action);
             }
 
+			action.ReleaseActionForReuse();
 			return action;
         }
 
-		private void SendActionToStories(StoryAction action, Story story)
+		private void ApplyActionToStories(StoryAction action, Story story)
 		{
-			story.ActionHandler(action);
+			action.ApplyToStory(story);
 
 			if (story.subStories == null) return;
 
 			for (var i = 0; i < story.subStories.Length; ++i) 
 			{
-				SendActionToStories(action, story.subStories[i]);
+				ApplyActionToStories(action, story.subStories[i]);
 			}
 		}
 

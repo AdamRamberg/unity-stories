@@ -5,9 +5,6 @@ namespace UnityStories
 	[CreateAssetMenu(menuName = "Unity Stories/Entry Story")]
 	public class EntryStory : Story 
 	{
-		private const string NAME = "entry";
-		public override string Name { get { return NAME; } }
-
 		public override void InitStory()
 		{
 			InitStorySub(this);

@@ -24,7 +24,7 @@ namespace UnityStories
         {
             return (action) => {
                 var storeAction = (StoryAction) action;
-                Debug.Log("Logger: " + storeAction.Type);
+                Debug.Log("Logger: " + storeAction.ToString());
                 return nextDispatch(action);
             };
         }
