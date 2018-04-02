@@ -19,16 +19,13 @@ Import unitypackage from latest releases or download and import into your projec
 ## Usage
 In order to utilize this library you should understand how flux and redux works. See links above. 
 
-Create a Stories object (Assets/Create/Unity Stories/Stories) and an Entry Story (Assets/Create/Unity Stories/Entry Story). Drag and drop the Entry Story to the Stories object.
+Create a Stories object (Assets/Create/Unity Stories/Stories) and an Entry Story (Press "Create Entry Story" button on Stories asset or Assets/Create/Unity Stories/Entry Story). Drag and drop the Entry Story to the Stories object.
 
 Create your stories (state containers) by inheriting from the abstract Story class and connect them to the Entry Story. Here is an example of a simple story with two int variables, one that is persistied between plays and one that is initalized each time we start the game: 
 ```
-public class CountStory : Story 
+[CreateAssetMenu(menuName = "Unity Stories/Example1/Stories/Count Story")]
+public class CountStory : Story
 {
-    // Define the name of the Story. Should be unique for all of your Stories.
-	public static string NAME = "count";
-	public override string Name { get { return NAME; } }
-
     // Variables that you want to keep track of in your story.
 	public int count = 0;
 	public int countNotPresisted = 0;
@@ -39,51 +36,61 @@ public class CountStory : Story
 		countNotPresisted = 0;
 	}
 
-    // Handle Story Actions and mutate your state accordingly.
-	public override void ActionHandler(StoryAction action)
+    // Actions / factories
+    public class IncrementCounter : StoryAction 
     {
-        switch (action.Type)
+        public override void ApplyToStory(Story story) 
         {
-            case INCREMENT_COUNTER:
-                {
-                    count++;
-                    countNotPresisted++;
-                    break;
-                }
-            case DECREMENT_COUNTER:
-                {
-                    count--;
-                    countNotPresisted--;
-                    break;
-                }
+           if (!(story is CountStory)) return;
+
+            var countStory = (CountStory) story;
+            countStory.count++;
+            countStory.countNotPresisted++;
         }
     }
 
-    // Action constants
-    public const string INCREMENT_COUNTER = "INCREMENT_COUNTER";
-    public const string DECREMENT_COUNTER = "DECREMENT_COUNTER";
-
-    // Actions
-    public struct StoryActionIncrementCount : StoryAction 
+    public static class IncrementCountFactory
     {
-        public string Type { get { return INCREMENT_COUNTER; } }
+        static StoryActionFactoryHelper<IncrementCounter> helper = new StoryActionFactoryHelper<IncrementCounter>();
+        public static IncrementCounter Get() 
+        {
+            var action = helper.GetUnused();
+            return action != null ? action : helper.CacheAndReturn(new IncrementCounter());
+        }
     }
 
-    public struct StoryActionDecrementCount : StoryAction 
+    public class DecrementCount : StoryAction 
     {
-        public string Type { get { return DECREMENT_COUNTER; } }
+        public override void ApplyToStory(Story story) 
+        {
+            if (!(story is CountStory)) return;
+
+            var countStory = (CountStory) story;
+            countStory.count--;
+            countStory.countNotPresisted--;
+        }
+    }
+
+    public static class DecrementCountFactory
+    {
+        static StoryActionFactoryHelper<DecrementCount> helper = new StoryActionFactoryHelper<DecrementCount>();
+        public static DecrementCount Get() 
+        {
+            var action = helper.GetUnused();
+            return action != null ? action : helper.CacheAndReturn(new DecrementCount());
+        }
     }
 }
 ```
 
 There might seems to be a lot going on in this Story. Below is a breakdown on what everything is: 
-- The first thing that in the Story is straight forward. It is a definition of the Story's name, which should be unique for all of your Stories.
-- Next we define the variables that we want to keep track of in this Story. This is what the Story is all about. You can store any data or object that you want to keep track of and change when Story Actions are dispatched. 
+- First we define the variables that we want to keep track of in this Story. This is what the Story is all about. You can store any data or object that you want to keep track of and change when StoryActions are dispatched. 
 - The InitStory() method is used if you want to initalize variables each play. 
-- A Story is responsible of keeping track of one part of your game state, but also handling relevant incoming Story Actions (ActionHandler). In the above example the ActionHandler mutates the state when the Story Action INCREMENT_COUNTER and DECREMENT_COUNTER are dispatched. A crucial difference between Redux and Unity Stories is that an ActionHandler (reducer in Redux) is mutating the current state instead of returning a completley new state. This is because Unity Stories tries to minimize the amount of garbage being generated.
-- The last thing we do in this Story is to define the Story Actions. These can be used and dispatched from your code when you want to manipulate this Story. 
+- Lastly we define our StoryActions and corrsponding factories (these can be defined in a seperate file if that is preferable). These can be dispatched from your code in order to change the state in our Story. The StoryAction can contain data and is responsible to define how it changes our Story's data. In the above example we define 2 actions (and corrsponding factories) that increments and decrements our variables stored in the Story.
 
-When the Story is defined you can now use is it in your code. Here is an example of how you would dispatch a Story Action from a button click: 
+*One major difference from Redux is that we don't define a reducer. Instead we let StoryActions define how we change our Story / state. Another major difference is that a StoryAction actual mutates our Story / state. This is because Unity Stories tries to minimize the amount of garbage being generated.*
+
+When the Story is defined you can now use is it in your code. Here is an example of how you would dispatch a StoryAction (using our defined factories) from a button click: 
 ```
 public class Button : MonoBehaviour
 {
@@ -91,12 +98,12 @@ public class Button : MonoBehaviour
 
     public void OnClick_Inc()
     {
-        stories.Dispatch(new CountStory.StoryActionIncrementCount());
+        stories.Dispatch(CountStory.IncrementCountFactory.Get());
     }
 
     public void OnClick_Dec()
     {
-        stories.Dispatch(new CountStory.StoryActionDecrementCount());
+        stories.Dispatch(CountStory.DecrementCountFactory.Get());
     }
 }
 ```
@@ -125,8 +132,8 @@ public class CountText_Example1 : MonoBehaviour
 
     public void MapStoriesToProps(Story story)
     {
-        count = story.Get<CountStory>(CountStory.NAME).count;
-        countNotPersisted = story.Get<CountStory>(CountStory.NAME).countNotPresisted;
+        count = story.Get<CountStory>().count;
+        countNotPersisted = story.Get<CountStory>().countNotPresisted;
     }
 }
 ```
@@ -134,7 +141,7 @@ public class CountText_Example1 : MonoBehaviour
 See more examples of how to use Unity Stories in the Examples folder. 
 
 ## Middleware
-Unity Stories is allowing users to use enhance your Stories(like Redux allows users to enhance their store). Unity Stories ships with one enhancer creator, ApplyMiddleware, that is making it possible to apply middleware to the dispatch method. Logger is a middleware defined in Unity Stories that shows the API and a simple example of how a middleware can be defined. 
+Unity Stories is allowing users to use and define enhancers (like Redux allows users to enhance their store). Unity Stories ships with one enhancer creator, ApplyMiddleware, that is making it possible to apply middleware to the dispatch method. Logger is a middleware defined in Unity Stories that shows the API and a simple example of how a middleware can be defined. 
 
 ## Performance
-In order to avoid unnecessary garbage collection reference types (for example strings) in stories and in actions should be avoided when possible. Furthermore, it also might be a good idea to use action factories in order to not generate unnecessary garbage. 
+First of all, it is strongly recommended to create StoryAction factories in order to minimize garbage. Furthermore, in order to avoid unnecessary garbage collection reference types (for example strings) in StoryActions should be avoided if used often (for example in the Update loop) when possible.

@@ -24,7 +24,10 @@ namespace UnityStories
         {
             return (action) => {
                 var storeAction = (StoryAction) action;
+                // Log only in editor
+                #if UNITY_EDITOR
                 Debug.Log("Logger: " + storeAction.ToString());
+                #endif
                 return nextDispatch(action);
             };
         }

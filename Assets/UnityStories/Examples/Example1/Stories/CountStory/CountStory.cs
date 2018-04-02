@@ -2,7 +2,7 @@
 using UnityStories;
 
 [CreateAssetMenu(menuName = "Unity Stories/Example1/Stories/Count Story")]
-public class CountStory : Story 
+public class CountStory : Story
 {
     // Variables that you want to keep track of in your story.
 	public int count = 0;
@@ -14,12 +14,12 @@ public class CountStory : Story
 		countNotPresisted = 0;
 	}
 
-    // Actions
-    public class StoryActionIncrementCount : StoryAction 
+    // Actions / factories
+    public class IncrementCounter : StoryAction 
     {
         public override void ApplyToStory(Story story) 
         {
-            if (story.GetType() != typeof(CountStory)) return;
+           if (!(story is CountStory)) return;
 
             var countStory = (CountStory) story;
             countStory.count++;
@@ -27,21 +27,21 @@ public class CountStory : Story
         }
     }
 
-    public static class StoryActionIncrementCountFactory
+    public static class IncrementCountFactory
     {
-        static StoryActionFactoryHelper<StoryActionIncrementCount> helper = new StoryActionFactoryHelper<StoryActionIncrementCount>();
-        public static StoryActionIncrementCount Get() 
+        static StoryActionFactoryHelper<IncrementCounter> helper = new StoryActionFactoryHelper<IncrementCounter>();
+        public static IncrementCounter Get() 
         {
             var action = helper.GetUnused();
-            return action != null ? action : helper.CacheAndReturn(new StoryActionIncrementCount());
+            return action != null ? action : helper.CacheAndReturn(new IncrementCounter());
         }
     }
 
-    public class StoryActionDecrementCount : StoryAction 
+    public class DecrementCount : StoryAction 
     {
         public override void ApplyToStory(Story story) 
         {
-            if (story.GetType() != typeof(CountStory)) return;
+            if (!(story is CountStory)) return;
 
             var countStory = (CountStory) story;
             countStory.count--;
@@ -49,13 +49,13 @@ public class CountStory : Story
         }
     }
 
-    public static class StoryActionDecrementCountFactory
+    public static class DecrementCountFactory
     {
-        static StoryActionFactoryHelper<StoryActionDecrementCount> helper = new StoryActionFactoryHelper<StoryActionDecrementCount>();
-        public static StoryActionDecrementCount Get() 
+        static StoryActionFactoryHelper<DecrementCount> helper = new StoryActionFactoryHelper<DecrementCount>();
+        public static DecrementCount Get() 
         {
             var action = helper.GetUnused();
-            return action != null ? action : helper.CacheAndReturn(new StoryActionDecrementCount());
+            return action != null ? action : helper.CacheAndReturn(new DecrementCount());
         }
     }
 }

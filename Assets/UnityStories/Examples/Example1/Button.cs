@@ -9,11 +9,11 @@ public class Button : MonoBehaviour
 
     public void OnClick_Inc()
     {
-        stories.Dispatch(CountStory.StoryActionIncrementCountFactory.Get());
+        stories.Dispatch(CountStory.IncrementCountFactory.Get());
     }
 
     public void OnClick_Dec()
     {
-        stories.Dispatch(CountStory.StoryActionDecrementCountFactory.Get());
+        stories.Dispatch(CountStory.DecrementCountFactory.Get());
     }
 }

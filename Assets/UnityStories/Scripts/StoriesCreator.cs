@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 namespace UnityStories 
 {
@@ -101,4 +102,37 @@ namespace UnityStories
             return entryStory;
         }
     }
+
+	[CustomPropertyDrawer(typeof(StoriesCreator))]
+	public class StoriesCreatorDrawer : PropertyDrawer
+	{
+		const float PADDING = 4f;
+		const float BUTTON_HEIGHT = 20f;
+		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    	{
+			StoriesCreator storiesCreator = fieldInfo.GetValue(property.serializedObject.targetObject) as StoriesCreator;
+			
+			// Add generate entry story button
+			var buttonPos = new Rect(new Vector2(position.x, position.y + EditorGUI.GetPropertyHeight(property) + PADDING), new Vector2(position.width, BUTTON_HEIGHT));
+			if (storiesCreator.entryStory == null && GUI.Button(buttonPos, "Create Entry Story")) 
+			{
+				var entryStory = ScriptableObject.CreateInstance<EntryStory>();
+				AssetDatabase.CreateAsset(entryStory, StoriesUtils.GetSelectedPathOrFallback() + "/EntryStory.asset");
+        		AssetDatabase.SaveAssets();
+				storiesCreator.entryStory = entryStory;
+			}
+			
+			// Draw default 
+			EditorGUI.PropertyField(position, property, label, true);
+		}
+
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+		{
+			StoriesCreator storiesCreator = fieldInfo.GetValue(property.serializedObject.targetObject) as StoriesCreator;
+			if (storiesCreator.entryStory != null) {
+				return EditorGUI.GetPropertyHeight(property);
+			}
+			return EditorGUI.GetPropertyHeight(property) + BUTTON_HEIGHT + PADDING + PADDING;
+		}
+	}
 }
