@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityStories;
 
@@ -7,8 +6,6 @@ public class CountText_Example1 : MonoBehaviour
 {
     public Text countText;
     public Text countNotPersistedText;
-    private int count = 0;
-    private int countNotPersisted = 0;
     public Stories stories;
 
     void Start() 
@@ -16,16 +13,19 @@ public class CountText_Example1 : MonoBehaviour
         stories.Connect(MapStoriesToProps);
     }
 
-    void Update()
+    void SetCountText(int count)
     {
-        // Bad practice to set text in Update() due to garbage collection. Only for demonstration purposes. 
         countText.text = "Count is: " + count;
-        countNotPersistedText.text = "Not persisted count is: " + countNotPersisted;
+    }
+
+    void SetCountTextNotPersisted(int count)
+    {
+        countNotPersistedText.text = "Not persisted count is: " + count;
     }
 
     public void MapStoriesToProps(Story story)
     {
-        count = story.Get<CountStory>().count;
-        countNotPersisted = story.Get<CountStory>().countNotPresisted;
+        SetCountText(story.Get<CountStory>().count);
+        SetCountTextNotPersisted(story.Get<CountStory>().countNotPresisted);
     }
 }

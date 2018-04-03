@@ -1,12 +1,13 @@
-# <img src="https://s3.amazonaws.com/unity-stories/unity-stories-withname.png" style="max-height: 128px !important; min-height: 96px !important;">
+![Unity Stories](https://s3.amazonaws.com/unity-stories/unity-stories-pencil-text.png)
+
 Unity Stories is a state container for games built in Unity utilizing Scriptable Objects. 
 
 ## Influences
-Unity Stories is mainly taking inspiration and is influenced by <a href="https://github.com/reactjs/redux">Redux</a> and <a href="https://github.com/facebook/flux">Flux</a>. 
+Unity Stories is inspired and influenced by [Redux](https://github.com/reactjs/redux) and [https://github.com/facebook/flux](Flux).
 
 Forerunner implementations in Unity / C# that also have influenced Unity Stories are: 
-- <a href="https://github.com/gblue1223/redux-unity3d">redux-unity-3d</a>
-- <a href="https://github.com/mattak/Unidux">Unidux</a>
+- [redux-unity-3d](https://github.com/gblue1223/redux-unity3d)
+- [Unidux](https://github.com/mattak/Unidux)
 
 ## Motivation
 The general approach to building scripts in Unity often generates a code base that is monolithic. This results in that your code is cumbersome to test, non-modular and hard to debug and understand. 
@@ -19,9 +20,9 @@ Import unitypackage from latest releases or download and import into your projec
 ## Usage
 In order to utilize this library you should understand how flux and redux works. See links above. 
 
-Create a Stories object (Assets/Create/Unity Stories/Stories) and an Entry Story (Press "Create Entry Story" button on Stories asset or Assets/Create/Unity Stories/Entry Story). Drag and drop the Entry Story to the Stories object.
+Create a Stories object (Assets/Create/Unity Stories/Stories) and an Entry Story (Press "Create Entry Story" button on Stories asset or Assets/Create/Unity Stories/Entry Story). If created from the window menu, drag and drop the Entry Story to the Stories object.
 
-Create your stories (state containers) by inheriting from the abstract Story class and connect them to the Entry Story. Here is an example of a simple story with two int variables, one that is persistied between plays and one that is initalized each time we start the game: 
+Create your Stories (state containers) by inheriting from the abstract Story class and connect them to the Entry Story. Here is an example of a simple story with two int variables, one that is persistied between plays and one that is initalized each time we start the game: 
 ```
 [CreateAssetMenu(menuName = "Unity Stories/Example1/Stories/Count Story")]
 public class CountStory : Story
@@ -86,9 +87,11 @@ public class CountStory : Story
 There might seems to be a lot going on in this Story. Below is a breakdown on what everything is: 
 - First we define the variables that we want to keep track of in this Story. This is what the Story is all about. You can store any data or object that you want to keep track of and change when StoryActions are dispatched. 
 - The InitStory() method is used if you want to initalize variables each play. 
-- Lastly we define our StoryActions and corrsponding factories (these can be defined in a seperate file if that is preferable). These can be dispatched from your code in order to change the state in our Story. The StoryAction can contain data and is responsible to define how it changes our Story's data. In the above example we define 2 actions (and corrsponding factories) that increments and decrements our variables stored in the Story.
+- Lastly we define our StoryActions and corrsponding factories (these can be defined in a seperate file if that is preferable). StoryActions can be dispatched from your code in order to change the state in our Story. The StoryAction can contain data and is responsible to define how it changes our Story's data. In the above example we define 2 StoryActions (and corrsponding factories) that increments and decrements our variables stored in the Story.
 
 *One major difference from Redux is that we don't define a reducer. Instead we let StoryActions define how we change our Story / state. Another major difference is that a StoryAction actual mutates our Story / state. This is because Unity Stories tries to minimize the amount of garbage being generated.*
+
+*Even though it is possible, a Story's state should never be altered directly, always dispatch a StoryAction.*
 
 When the Story is defined you can now use is it in your code. Here is an example of how you would dispatch a StoryAction (using our defined factories) from a button click: 
 ```
@@ -114,8 +117,6 @@ public class CountText_Example1 : MonoBehaviour
 {
     public Text countText;
     public Text countNotPersistedText;
-    private int count = 0;
-    private int countNotPersisted = 0;
     public Stories stories;
 
     void Start() 
@@ -123,17 +124,20 @@ public class CountText_Example1 : MonoBehaviour
         stories.Connect(MapStoriesToProps);
     }
 
-    void Update()
+    void SetCountText(int count)
     {
-        // Bad practice to set text in Update() due to garbage collection. Only for demonstration purposes. 
         countText.text = "Count is: " + count;
-        countNotPersistedText.text = "Not persisted count is: " + countNotPersisted;
+    }
+
+    void SetCountTextNotPersisted(int count)
+    {
+        countNotPersistedText.text = "Not persisted count is: " + count;
     }
 
     public void MapStoriesToProps(Story story)
     {
-        count = story.Get<CountStory>().count;
-        countNotPersisted = story.Get<CountStory>().countNotPresisted;
+        SetCountText(story.Get<CountStory>().count);
+        SetCountTextNotPersisted(story.Get<CountStory>().countNotPresisted);
     }
 }
 ```
@@ -142,6 +146,8 @@ See more examples of how to use Unity Stories in the Examples folder.
 
 ## Middleware
 Unity Stories is allowing users to use and define enhancers (like Redux allows users to enhance their store). Unity Stories ships with one enhancer creator, ApplyMiddleware, that is making it possible to apply middleware to the dispatch method. Logger is a middleware defined in Unity Stories that shows the API and a simple example of how a middleware can be defined. 
+
+For performance reasons it is preferable to always define StoreAction factories. However, if you want to define your own middleware there are things to take into consideration when you for example wants to perform an async task in an middleware based on the StoreAction. Internally, Unity Stories is keeping track of StoreActions (when using the StoryActionFactoryHelper). In order to keep the StoreAction alive for an async task the `KeepActionAlive()` must be used. It is also important that `ReleaseActionForReuse()` is called when the StoreAction can be released for reuse. 
 
 ## Performance
 First of all, it is strongly recommended to create StoryAction factories in order to minimize garbage. Furthermore, in order to avoid unnecessary garbage collection reference types (for example strings) in StoryActions should be avoided if used often (for example in the Update loop) when possible.

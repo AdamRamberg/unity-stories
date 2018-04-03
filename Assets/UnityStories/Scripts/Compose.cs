@@ -1,4 +1,5 @@
 using UnityEngine;
+
 namespace UnityStories
 {
 	public static class Compose 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStories;
 
-public class Button : MonoBehaviour
+public class Button_Example1 : MonoBehaviour
 {
     public Stories stories;
 
