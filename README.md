@@ -20,6 +20,7 @@ Import unitypackage from latest releases or download and import into your projec
 ## Usage
 In order to utilize this library you should understand how flux and redux works. See links above. 
 
+### Story and Story Actions
 Create a Stories object (Assets/Create/Unity Stories/Stories) and an Entry Story (Press "Create Entry Story" button on Stories asset or Assets/Create/Unity Stories/Entry Story). If created from the window menu, drag and drop the Entry Story to the Stories object.
 
 Create your Stories (state containers) by inheriting from the abstract Story class and connect them to the Entry Story. Here is an example of a simple story with two int variables, one that is persistied between plays and one that is initalized each time we start the game: 
@@ -93,6 +94,7 @@ There might seems to be a lot going on in this Story. Below is a breakdown on wh
 
 *Even though it is possible, a Story's state should never be altered directly, always dispatch a StoryAction.*
 
+### Dispatch Story Actions
 When the Story is defined you can now use is it in your code. Here is an example of how you would dispatch a StoryAction (using our defined factories) from a button click: 
 ```
 public class Button : MonoBehaviour
@@ -111,6 +113,7 @@ public class Button : MonoBehaviour
 }
 ```
 
+### Use The Data From The Story
 You can now use the values in this Story by connecting to your Stories from another script. Here is an example of displaying the values in an UI text element: 
 ```
 public class CountText_Example1 : MonoBehaviour 
@@ -142,6 +145,32 @@ public class CountText_Example1 : MonoBehaviour
 }
 ```
 
+### Connectors
+In order to seperate the story code from where the story data is consumed you can define a connector class. In the example above you would then remove the Stories specific code in `CountText_Example1` (`stories.Connect` and `MapStoriesToProps`) and make the setters (`SetCountText` and `SetCountTextNotPersisted`) public. You would then create a connector class looking like this: 
+
+```
+using UnityEngine;
+using UnityStories;
+
+public class ConnectCountToText_Example1 : MonoBehaviour 
+{
+    public Stories stories;
+	public CountText_Example1 countText_Example1;
+
+    void Start() 
+    {
+        stories.Connect(MapStoriesToProps);
+    }
+
+	void MapStoriesToProps(Story story)
+    {
+        countText_Example1.SetCountText(story.Get<CountStory>().count);
+        countText_Example1.SetCountTextNotPersisted(story.Get<CountStory>().countNotPresisted);
+    }
+}
+```
+
+### More Examples
 See more examples of how to use Unity Stories in the Examples folder. 
 
 ## Middleware

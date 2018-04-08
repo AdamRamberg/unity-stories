@@ -508,6 +508,7 @@ GameObject:
   - component: {fileID: 1585068160}
   - component: {fileID: 1585068161}
   - component: {fileID: 1585068162}
+  - component: {fileID: 1585068163}
   m_Layer: 0
   m_Name: TextContainer
   m_TagString: Untagged
@@ -552,7 +553,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mousePosText: {fileID: 992666692}
+--- !u!114 &1585068163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1585068159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d68817ecd5a0c4d3da7696f6c69537f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   stories: {fileID: 11400000, guid: 6f1797fda2a64404a9fc7f1365084125, type: 2}
+  mousePosText_Example2: {fileID: 1585068162}
 --- !u!1 &1643199278
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,6 +656,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1983823529}
   - component: {fileID: 1983823530}
+  - component: {fileID: 1983823531}
   m_Layer: 0
   m_Name: FollowMouse
   m_TagString: Untagged
@@ -675,4 +689,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a982b77ac42db484aaf20bf066106d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1983823531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1983823528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc52a1c7579eb4d68a13f4f4a4c172f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   stories: {fileID: 11400000, guid: 6f1797fda2a64404a9fc7f1365084125, type: 2}
+  followTarget_Example2: {fileID: 1983823530}

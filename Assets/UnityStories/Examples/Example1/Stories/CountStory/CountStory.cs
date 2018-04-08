@@ -15,7 +15,7 @@ public class CountStory : Story
 	}
 
     // Actions / factories
-    public class IncrementCounter : StoryAction 
+    public class IncrementCount : StoryAction 
     {
         public override void ApplyToStory(Story story) 
         {
@@ -29,11 +29,11 @@ public class CountStory : Story
 
     public static class IncrementCountFactory
     {
-        static StoryActionFactoryHelper<IncrementCounter> helper = new StoryActionFactoryHelper<IncrementCounter>();
-        public static IncrementCounter Get() 
+        static StoryActionFactoryHelper<IncrementCount> helper = new StoryActionFactoryHelper<IncrementCount>();
+        public static IncrementCount Get() 
         {
             var action = helper.GetUnused();
-            return action != null ? action : helper.CacheAndReturn(new IncrementCounter());
+            return action != null ? action : helper.CacheAndReturn(new IncrementCount());
         }
     }
 
