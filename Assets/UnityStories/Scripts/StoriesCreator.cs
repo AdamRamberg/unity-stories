@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace UnityStories 
 {
@@ -103,6 +105,7 @@ namespace UnityStories
         }
     }
 
+	#if UNITY_EDITOR
 	[CustomPropertyDrawer(typeof(StoriesCreator))]
 	public class StoriesCreatorDrawer : PropertyDrawer
 	{
@@ -135,4 +138,5 @@ namespace UnityStories
 			return EditorGUI.GetPropertyHeight(property) + BUTTON_HEIGHT + PADDING + PADDING;
 		}
 	}
+	#endif
 }
