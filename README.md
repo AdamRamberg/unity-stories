@@ -15,7 +15,7 @@ The general approach to building scripts in Unity often generates a code base th
 The aim of Unity Stories is to seperate concerns between your game state and the implementation of your game logic making your scripts modular. The will make protyping your game faster and makes it easier to make changes to your code base even though your project has grown large.  
 
 ## Installation
-Import unitypackage from latest releases or download and import into your project from the Unity Asset Store (coming soon).
+Import unitypackage from latest releases or download and import into your project from the [Unity Asset Store](https://assetstore.unity.com/packages/tools/integration/unity-stories-state-container-utilizing-scriptable-objects-115779).
 
 ## Usage
 In order to utilize this library you should understand how flux and redux works. See links above. 
@@ -180,3 +180,6 @@ For performance reasons it is preferable to always define StoreAction factories.
 
 ## Performance
 First of all, it is strongly recommended to create StoryAction factories in order to minimize garbage. Furthermore, in order to avoid unnecessary garbage collection reference types (for example strings) in StoryActions should be avoided if used often (for example in the Update loop) when possible.
+
+## Forum
+[Unity Forum Thread](https://forum.unity.com/threads/unity-stories-redux-like-state-container-utilizing-scriptable-objects.528998/)
