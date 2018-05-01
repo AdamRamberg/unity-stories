@@ -12,7 +12,9 @@ namespace UnityStories
 
 		public delegate StoryAction DelegateDispatch(StoryAction action);
 		public delegate void DelegateConnect(Action<Story> handler);
+		public delegate void DelegateDisconnect(Action<Story> handler);
 		public delegate void DelegateListen(Action<StoryAction> handler);
+		public delegate void DelegateRemoveListener(Action<StoryAction> handler);
 		public delegate int DelegateGetConnectedCount();
         public delegate EntryStory DelegateGetStories();
 
@@ -28,10 +30,22 @@ namespace UnityStories
 			set { this._connect = value; }
 		}
 
+		private DelegateDisconnect _disconnect;
+		public DelegateDisconnect Disconnect {
+			get { return this._disconnect; }
+			set { this._disconnect = value; }
+		}
+
 		private DelegateListen _listen;
 		public DelegateListen Listen {
 			get { return this._listen; }
 			set { this._listen = value; }
+		}
+
+		private DelegateRemoveListener _removeListener;
+		public DelegateRemoveListener RemoveListener {
+			get { return this._removeListener; }
+			set { this._removeListener = value; }
 		}
 
 		private DelegateGetConnectedCount _getConnectedCount;

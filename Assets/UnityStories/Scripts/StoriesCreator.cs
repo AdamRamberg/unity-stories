@@ -45,7 +45,9 @@ namespace UnityStories
 
 			stories.Dispatch = DefImpl_Dispatch;
 			stories.Connect = DefImpl_Connect;
+			stories.Disconnect = DefImpl_Disconnect;
 			stories.Listen = DefImpl_Listen;
+			stories.RemoveListener = DefImpl_RemoveListener;
 			stories.GetConnectedCount = DefImpl_GetConnectedCount;
             stories.GetStories = DefImpl_GetStories;
 
@@ -57,13 +59,13 @@ namespace UnityStories
 			// Apply action to stories
 			ApplyActionToStories(action, entryStory);
 
-            // // Send update to everyone that have mapped their props
+            // Send update to everyone that have mapped their props
             for (var i = 0; i < mapStoriesToPropsHandlers.Count; ++i)
             {
                 mapStoriesToPropsHandlers[i](entryStory);
             }
 
-            // // Send action forward to listeners
+            // Send action forward to listeners
             for (var i = 0; i < actionListeners.Count; ++i)
             {
                 actionListeners[i](action);
@@ -92,11 +94,21 @@ namespace UnityStories
             handler(entryStory);
         }
 
+		public void DefImpl_Disconnect(Action<Story> handler)
+        {
+            mapStoriesToPropsHandlers.Remove(handler);
+        }
+
 		public int DefImpl_GetConnectedCount() { return mapStoriesToPropsHandlers.Count; }
 
 		public void DefImpl_Listen(Action<StoryAction> handler)
 		{
 			actionListeners.Add(handler);
+		}
+
+		public void DefImpl_RemoveListener(Action<StoryAction> handler)
+		{
+			actionListeners.Remove(handler);
 		}
 
         public EntryStory DefImpl_GetStories()

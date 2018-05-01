@@ -3,12 +3,12 @@ using UnityStories;
 
 public class ConnectMousePosToText_Example2 : MonoBehaviour 
 {
-	public Stories stories;
+	public StoriesHelper storiesHelper;
 	public MousePosText_Example2 mousePosText_Example2;
 	
     void Start() 
     {
-        stories.Connect(MapStoriesToProps);
+        storiesHelper.Setup(gameObject, MapStoriesToProps);
     }
 	
 	public void MapStoriesToProps(Story story)

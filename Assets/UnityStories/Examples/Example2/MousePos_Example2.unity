@@ -140,7 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8634dc9e7ba24bc1b39f9e23dae4c49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stories: {fileID: 11400000, guid: 6f1797fda2a64404a9fc7f1365084125, type: 2}
+  storiesHelper:
+    stories: {fileID: 11400000, guid: 6f1797fda2a64404a9fc7f1365084125, type: 2}
 --- !u!4 &244311768
 Transform:
   m_ObjectHideFlags: 0
@@ -564,7 +565,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d68817ecd5a0c4d3da7696f6c69537f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stories: {fileID: 11400000, guid: 6f1797fda2a64404a9fc7f1365084125, type: 2}
+  storiesHelper:
+    stories: {fileID: 11400000, guid: 6f1797fda2a64404a9fc7f1365084125, type: 2}
   mousePosText_Example2: {fileID: 1585068162}
 --- !u!1 &1643199278
 GameObject:
@@ -700,5 +702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc52a1c7579eb4d68a13f4f4a4c172f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stories: {fileID: 11400000, guid: 6f1797fda2a64404a9fc7f1365084125, type: 2}
+  storiesHelper:
+    stories: {fileID: 11400000, guid: 6f1797fda2a64404a9fc7f1365084125, type: 2}
   followTarget_Example2: {fileID: 1983823530}

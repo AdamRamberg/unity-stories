@@ -99,19 +99,20 @@ When the Story is defined you can now use is it in your code. Here is an example
 ```
 public class Button : MonoBehaviour
 {
-    public Stories stories;
+    public StoriesHelper storiesHelper;
 
     public void OnClick_Inc()
     {
-        stories.Dispatch(CountStory.IncrementCountFactory.Get());
+        storiesHelper.Dispatch(CountStory.IncrementCountFactory.Get());
     }
 
     public void OnClick_Dec()
     {
-        stories.Dispatch(CountStory.DecrementCountFactory.Get());
+        storiesHelper.Dispatch(CountStory.DecrementCountFactory.Get());
     }
 }
 ```
+*Don't forget to assign the Stories object to the StoriesHelper from the inspector*
 
 ### Use The Data From The Story
 You can now use the values in this Story by connecting to your Stories from another script. Here is an example of displaying the values in an UI text element: 
@@ -120,11 +121,11 @@ public class CountText_Example1 : MonoBehaviour
 {
     public Text countText;
     public Text countNotPersistedText;
-    public Stories stories;
+    public StoriesHelper storiesHelper;
 
     void Start() 
     {
-        stories.Connect(MapStoriesToProps);
+        storiesHelper.Setup(gameObject, MapStoriesToProps);
     }
 
     void SetCountText(int count)
@@ -144,6 +145,7 @@ public class CountText_Example1 : MonoBehaviour
     }
 }
 ```
+*Don't forget to assign the Stories object to the StoriesHelper from the inspector*
 
 ### Connectors
 In order to seperate the story code from where the story data is consumed you can define a connector class. In the example above you would then remove the Stories specific code in `CountText_Example1` (`stories.Connect` and `MapStoriesToProps`) and make the setters (`SetCountText` and `SetCountTextNotPersisted`) public. You would then create a connector class looking like this: 
@@ -154,18 +156,41 @@ using UnityStories;
 
 public class ConnectCountToText_Example1 : MonoBehaviour 
 {
-    public Stories stories;
-	public CountText_Example1 countText_Example1;
+    public StoriesHelper storiesHelper;
+    public CountText_Example1 countText_Example1;
 
     void Start() 
     {
-        stories.Connect(MapStoriesToProps);
+        storiesHelper.Setup(gameObject, MapStoriesToProps);
     }
 
 	void MapStoriesToProps(Story story)
     {
         countText_Example1.SetCountText(story.Get<CountStory>().count);
         countText_Example1.SetCountTextNotPersisted(story.Get<CountStory>().countNotPresisted);
+    }
+}
+```
+
+### Stories Helper
+The stories helper class helps your setup your connection to your stories and provides a public `Dispatch` function. Use this instead of writing boilerplate code for `Connect` / `Disconnect` and `Listen` / `RemoveListener` in your MonoBehaviour scripts. Declare the `StoriesHelper` in your MonoBehaviour, drag and drop your stories object from the inspector and call the Setup function from your Start / Awake function.
+
+```
+using UnityEngine;
+using UnityStories;
+
+public class MyMonoBehaviour : MonoBehaviour 
+{
+    public StoriesHelper storiesHelper;
+
+    void Start() 
+    {
+        storiesHelper.Setup(gameObject, MapStoriesToProps);
+    }
+
+    void MapStoriesToProps(Story story)
+    {
+        // Map your stories
     }
 }
 ```

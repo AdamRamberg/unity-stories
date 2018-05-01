@@ -3,12 +3,12 @@ using UnityStories;
 
 public class ConnectMousePosToTarget_Example2 : MonoBehaviour 
 {
-	public Stories stories;
+	public StoriesHelper storiesHelper;
 	public FollowTarget_Example2 followTarget_Example2;	
 
 	void Start () 
 	{
-		stories.Connect(MapStoriesToProps);
+		storiesHelper.Setup(gameObject, MapStoriesToProps);
 	}
 	
 	public void MapStoriesToProps(Story story)

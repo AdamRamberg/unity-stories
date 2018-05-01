@@ -3,15 +3,15 @@ using UnityStories;
 
 public class Button_Example1 : MonoBehaviour
 {
-    public Stories stories;
+    public StoriesHelper storiesHelper;
 
     public void OnClick_Inc()
     {
-        stories.Dispatch(CountStory.IncrementCountFactory.Get());
+        storiesHelper.Dispatch(CountStory.IncrementCountFactory.Get());
     }
 
     public void OnClick_Dec()
     {
-        stories.Dispatch(CountStory.DecrementCountFactory.Get());
+        storiesHelper.Dispatch(CountStory.DecrementCountFactory.Get());
     }
 }

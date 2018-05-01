@@ -3,12 +3,12 @@ using UnityStories;
 
 public class ConnectCountToText_Example1 : MonoBehaviour 
 {
-    public Stories stories;
+    public StoriesHelper storiesHelper;
 	public CountText_Example1 countText_Example1;
 
     void Start() 
     {
-        stories.Connect(MapStoriesToProps);
+        storiesHelper.Setup(gameObject, MapStoriesToProps);
     }
 
 	void MapStoriesToProps(Story story)

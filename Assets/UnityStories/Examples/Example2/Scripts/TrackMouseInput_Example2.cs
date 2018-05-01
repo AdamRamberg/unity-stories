@@ -2,10 +2,10 @@
 using UnityStories;
 public class TrackMouseInput_Example2 : MonoBehaviour 
 {
-	public Stories stories;
+	public StoriesHelper storiesHelper;
 
 	void Update () 
 	{
-		stories.Dispatch(MouseInputStory.UpdateMousePosFactory.Get(Input.mousePosition));
+		storiesHelper.Dispatch(MouseInputStory.UpdateMousePosFactory.Get(Input.mousePosition));
 	}
 }
