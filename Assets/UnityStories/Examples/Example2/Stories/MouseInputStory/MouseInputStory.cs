@@ -14,35 +14,12 @@ public class MouseInputStory : Story
 	}
 
     // Actions / factories
-    public class UpdateMousePos : StoryAction 
+    public class UpdateMousePos : GenericAction<MouseInputStory, Vector2> 
     {
-        public Vector2 updateMousePos;
-
-        public UpdateMousePos(Vector2 updateMousePos) 
+        public override void Action(MouseInputStory story, Vector2 mousePos) 
         {
-            this.updateMousePos = updateMousePos;
-        }
-        public override void ApplyToStory(Story story) 
-        {
-           if (!(story is MouseInputStory)) return;
-
-            var mouseInputStory = (MouseInputStory) story;
-            mouseInputStory.mousePos = updateMousePos;
+            story.mousePos = mousePos;
         }
     }
-
-    public static class UpdateMousePosFactory
-    {
-        static StoryActionFactoryHelper<UpdateMousePos> helper = new StoryActionFactoryHelper<UpdateMousePos>();
-        public static UpdateMousePos Get(Vector2 updateMousePos) 
-        {
-            var action = helper.GetUnused();
-            if(action != null)
-            {
-                action.updateMousePos = updateMousePos;
-                return action;
-            }
-            return helper.CacheAndReturn(new UpdateMousePos(updateMousePos));
-        }
-    }
+    public static GenericFactory<UpdateMousePos, MouseInputStory, Vector2> UpdateMousePosFactory = new GenericFactory<UpdateMousePos, MouseInputStory, Vector2>();
 }

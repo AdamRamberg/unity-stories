@@ -15,47 +15,23 @@ public class CountStory : Story
 	}
 
     // Actions / factories
-    public class IncrementCount : StoryAction 
+    public class IncrementCount : GenericAction<CountStory> 
     {
-        public override void ApplyToStory(Story story) 
+        public override void Action(CountStory story) 
         {
-           if (!(story is CountStory)) return;
-
-            var countStory = (CountStory) story;
-            countStory.count++;
-            countStory.countNotPresisted++;
+            story.count++;
+            story.countNotPresisted++;
         }
     }
+    public static GenericFactory<IncrementCount, CountStory> IncrementCountFactory = new GenericFactory<IncrementCount, CountStory>();
 
-    public static class IncrementCountFactory
+    public class DecrementCount : GenericAction<CountStory> 
     {
-        static StoryActionFactoryHelper<IncrementCount> helper = new StoryActionFactoryHelper<IncrementCount>();
-        public static IncrementCount Get() 
+        public override void Action(CountStory story) 
         {
-            var action = helper.GetUnused();
-            return action != null ? action : helper.CacheAndReturn(new IncrementCount());
+            story.count--;
+            story.countNotPresisted--;
         }
     }
-
-    public class DecrementCount : StoryAction 
-    {
-        public override void ApplyToStory(Story story) 
-        {
-            if (!(story is CountStory)) return;
-
-            var countStory = (CountStory) story;
-            countStory.count--;
-            countStory.countNotPresisted--;
-        }
-    }
-
-    public static class DecrementCountFactory
-    {
-        static StoryActionFactoryHelper<DecrementCount> helper = new StoryActionFactoryHelper<DecrementCount>();
-        public static DecrementCount Get() 
-        {
-            var action = helper.GetUnused();
-            return action != null ? action : helper.CacheAndReturn(new DecrementCount());
-        }
-    }
+    public static GenericFactory<DecrementCount, CountStory> DecrementCountFactory = new GenericFactory<DecrementCount, CountStory>();
 }
