@@ -29,66 +29,42 @@ Create your Stories (state containers) by inheriting from the abstract Story cla
 public class CountStory : Story
 {
     // Variables that you want to keep track of in your story.
-	public int count = 0;
-	public int countNotPresisted = 0;
+    public int count = 0;
+    public int countNotPresisted = 0;
 
     // Init your variables here that you don't want to be persisted between plays.
-	public override void InitStory()
-	{
-		countNotPresisted = 0;
-	}
+    public override void InitStory()
+    {
+        countNotPresisted = 0;
+    }
 
     // Actions / factories
-    public class IncrementCounter : StoryAction 
+    public class IncrementCount : GenericAction<CountStory> 
     {
-        public override void ApplyToStory(Story story) 
+        public override void Action(CountStory story) 
         {
-           if (!(story is CountStory)) return;
-
-            var countStory = (CountStory) story;
-            countStory.count++;
-            countStory.countNotPresisted++;
+            story.count++;
+            story.countNotPresisted++;
         }
     }
+    public static GenericFactory<IncrementCount, CountStory> IncrementCountFactory = new GenericFactory<IncrementCount, CountStory>();
 
-    public static class IncrementCountFactory
+    public class DecrementCount : GenericAction<CountStory> 
     {
-        static StoryActionFactoryHelper<IncrementCounter> helper = new StoryActionFactoryHelper<IncrementCounter>();
-        public static IncrementCounter Get() 
+        public override void Action(CountStory story) 
         {
-            var action = helper.GetUnused();
-            return action != null ? action : helper.CacheAndReturn(new IncrementCounter());
+            story.count--;
+            story.countNotPresisted--;
         }
     }
-
-    public class DecrementCount : StoryAction 
-    {
-        public override void ApplyToStory(Story story) 
-        {
-            if (!(story is CountStory)) return;
-
-            var countStory = (CountStory) story;
-            countStory.count--;
-            countStory.countNotPresisted--;
-        }
-    }
-
-    public static class DecrementCountFactory
-    {
-        static StoryActionFactoryHelper<DecrementCount> helper = new StoryActionFactoryHelper<DecrementCount>();
-        public static DecrementCount Get() 
-        {
-            var action = helper.GetUnused();
-            return action != null ? action : helper.CacheAndReturn(new DecrementCount());
-        }
-    }
+    public static GenericFactory<DecrementCount, CountStory> DecrementCountFactory = new GenericFactory<DecrementCount, CountStory>();
 }
 ```
 
-There might seems to be a lot going on in this Story. Below is a breakdown on what everything is: 
+Below is a breakdown of what is going on in our `CountStory`: 
 - First we define the variables that we want to keep track of in this Story. This is what the Story is all about. You can store any data or object that you want to keep track of and change when StoryActions are dispatched. 
 - The InitStory() method is used if you want to initalize variables each play. 
-- Lastly we define our StoryActions and corrsponding factories (these can be defined in a seperate file if that is preferable). StoryActions can be dispatched from your code in order to change the state in our Story. The StoryAction can contain data and is responsible to define how it changes our Story's data. In the above example we define 2 StoryActions (and corrsponding factories) that increments and decrements our variables stored in the Story.
+- Lastly we define our StoryActions and corrsponding factories (these can be defined in a seperate file if that is preferable). StoryActions can be dispatched from your code in order to change the state in our Story. The StoryAction can contain data and is responsible to define how it changes our Story's data (defined in `void Action(...)`). In the above example we define 2 StoryActions (and corrsponding factories) that increments and decrements our variables stored in the Story. The example is using `GenericAction` / `GenericFactory` in order to reduce boilerplate code, but if needed / wanted it is possible to extend `StoryAction` directly. 
 
 *One major difference from Redux is that we don't define a reducer. Instead we let StoryActions define how we change our Story / state. Another major difference is that a StoryAction actual mutates our Story / state. This is because Unity Stories tries to minimize the amount of garbage being generated.*
 
