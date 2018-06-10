@@ -12,8 +12,8 @@ namespace UnityStories
     {
         public EntryStory entryStory;
 		public EnhancerCreator[] enhancerCreators;
-        private List<Action<Story>> mapStoriesToPropsHandlers = new List<Action<Story>>();
-        private List<Action<StoryAction>> actionListeners = new List<Action<StoryAction>>();
+		private Action<Story> mapStoriesToPropsHandlers;
+        private Action<StoryAction> actionListeners;
 
 		public delegate void DelegateCreateStories(Stories stories, EnhancerCreator.Enhancer enhancer = null);
 
@@ -60,16 +60,16 @@ namespace UnityStories
 			ApplyActionToStories(action, entryStory);
 
             // Send update to everyone that have mapped their props
-            for (var i = 0; i < mapStoriesToPropsHandlers.Count; ++i)
-            {
-                mapStoriesToPropsHandlers[i](entryStory);
-            }
+			if (mapStoriesToPropsHandlers != null)
+			{
+				mapStoriesToPropsHandlers(entryStory);
+			}
 
             // Send action forward to listeners
-            for (var i = 0; i < actionListeners.Count; ++i)
-            {
-                actionListeners[i](action);
-            }
+			if (actionListeners != null)
+			{
+				actionListeners(action);
+			}
 
 			action.ReleaseActionForReuse();
 			return action;
@@ -89,26 +89,26 @@ namespace UnityStories
 
         public void DefImpl_Connect(Action<Story> handler)
         {
-            mapStoriesToPropsHandlers.Add(handler);
+            mapStoriesToPropsHandlers += handler;
             // Send stories on connect
             handler(entryStory);
         }
 
 		public void DefImpl_Disconnect(Action<Story> handler)
         {
-            mapStoriesToPropsHandlers.Remove(handler);
+            mapStoriesToPropsHandlers -= handler;
         }
 
-		public int DefImpl_GetConnectedCount() { return mapStoriesToPropsHandlers.Count; }
+		public int DefImpl_GetConnectedCount() { return mapStoriesToPropsHandlers.GetInvocationList().Length; }
 
 		public void DefImpl_Listen(Action<StoryAction> handler)
 		{
-			actionListeners.Add(handler);
+			actionListeners += handler;
 		}
 
 		public void DefImpl_RemoveListener(Action<StoryAction> handler)
 		{
-			actionListeners.Remove(handler);
+			actionListeners -= handler;
 		}
 
         public EntryStory DefImpl_GetStories()
