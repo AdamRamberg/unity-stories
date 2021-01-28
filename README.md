@@ -24,7 +24,7 @@ In order to utilize this library you should understand how flux and redux works.
 Create a Stories object (Assets/Create/Unity Stories/Stories) and an Entry Story (Press "Create Entry Story" button on Stories asset or Assets/Create/Unity Stories/Entry Story). If created from the window menu, drag and drop the Entry Story to the Stories object.
 
 Create your Stories (state containers) by inheriting from the abstract Story class and connect them to the Entry Story. Here is an example of a simple story with two int variables, one that is persistied between plays and one that is initalized each time we start the game: 
-```
+```csharp
 [CreateAssetMenu(menuName = "Unity Stories/Example1/Stories/Count Story")]
 public class CountStory : Story
 {
@@ -72,7 +72,7 @@ Below is a breakdown of what is going on in our `CountStory`:
 
 ### Dispatch Story Actions
 When the Story is defined you can now use is it in your code. Here is an example of how you would dispatch a StoryAction (using our defined factories) from a button click: 
-```
+```csharp
 public class Button : MonoBehaviour
 {
     public StoriesHelper storiesHelper;
@@ -92,7 +92,7 @@ public class Button : MonoBehaviour
 
 ### Use The Data From The Story
 You can now use the values in this Story by connecting to your Stories from another script. Here is an example of displaying the values in an UI text element: 
-```
+```csharp
 public class CountText_Example1 : MonoBehaviour 
 {
     public Text countText;
@@ -126,7 +126,7 @@ public class CountText_Example1 : MonoBehaviour
 ### Connectors
 In order to seperate the story code from where the story data is consumed you can define a connector class. In the example above you would then remove the Stories specific code in `CountText_Example1` (`stories.Connect` and `MapStoriesToProps`) and make the setters (`SetCountText` and `SetCountTextNotPersisted`) public. You would then create a connector class looking like this: 
 
-```
+```csharp
 using UnityEngine;
 using UnityStories;
 
@@ -151,7 +151,7 @@ public class ConnectCountToText_Example1 : MonoBehaviour
 ### Stories Helper
 The stories helper class helps your setup your connection to your stories and provides a public `Dispatch` function. Use this instead of writing boilerplate code for `Connect` / `Disconnect` and `Listen` / `RemoveListener` in your MonoBehaviour scripts. Declare the `StoriesHelper` in your MonoBehaviour, drag and drop your stories object from the inspector and call the Setup function from your Start / Awake function.
 
-```
+```csharp
 using UnityEngine;
 using UnityStories;
 
